@@ -5,33 +5,46 @@
 
 trigger:
 - master
+stages:
+  - stage: Build_And_Test
+    jobs:
+    - job : Build_And_Test
+    pool:
+      vmImage: 'ubuntu-latest'
+      continueOnError: false
+      steps:
+      - task: Maven@3
+        inputs:
+          mavenPomFile: 'apis/user-java/pom.xml'
+          goals: 'test'
+          publishJUnitResults: true
+          testResultsFiles: '**/surefire-reports/TEST-*.xml'
+          codeCoverageToolOption: 'Cobertura'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: '1.11'
+          mavenVersionOption: 'Default'
+          mavenAuthenticateFeed: false
+          effectivePomSkip: false
+          sonarQubeRunAnalysis: false
+          checkStyleRunAnalysis: true
+          pmdRunAnalysis: true
+          findBugsRunAnalysis: true
 
-pool:
-  vmImage: 'ubuntu-latest'
+  - stage: Docker_Build
 
-steps:
-- task: Maven@3
-  inputs:
-    mavenPomFile: 'apis/user-java/pom.xml'
-    goals: 'test'
-    publishJUnitResults: true
-    testResultsFiles: '**/surefire-reports/TEST-*.xml'
-    codeCoverageToolOption: 'Cobertura'
-    javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '1.11'
-    mavenVersionOption: 'Default'
-    mavenAuthenticateFeed: false
-    effectivePomSkip: false
-    sonarQubeRunAnalysis: false
-    checkStyleRunAnalysis: true
-    pmdRunAnalysis: true
-    findBugsRunAnalysis: true
-- task: Docker@2
-  inputs:
-    containerRegistry: 'ACR'
-    repository: 'devopsoh/api-user-java'
-    command: 'buildAndPush'
-    Dockerfile: 'apis/user-java/Dockerfile'
-    tags: |
-      $(Build.BuildId)
-      latest
+    jobs:
+      - job : Docker_Build
+    pool:
+      vmImage: 'ubuntu-latest'
+      continueOnError: false
+      steps:
+
+      - task: Docker@2
+        inputs:
+          containerRegistry: 'ACR'
+          repository: 'devopsoh/api-user-java'
+          command: 'buildAndPush'
+          Dockerfile: 'apis/user-java/Dockerfile'
+          tags: |
+            $(Build.BuildId)
+            latest
