@@ -18,7 +18,7 @@ steps:
     containerRegistry: 'ACR'
     repository: 'devopsoh/api-user-java'
     command: 'buildAndPush'
-    Dockerfile: '/apis/user-java/Dockerfile'
+    Dockerfile: 'apis/user-java/Dockerfile'
     tags: |
       $(Build.BuildId)
       latest
