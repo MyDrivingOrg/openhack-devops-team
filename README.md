@@ -1,4 +1,4 @@
-# Project Name karasmus
+# Project Name take 2
 
 The DevOps open hack event is designed to foster learning via implementing DevOps practices with a series of challenges.
 
