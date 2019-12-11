@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using Newtonsoft.Json;
+using System.Reflection;
 
 namespace poi.Models
 {
@@ -9,11 +10,15 @@ namespace poi.Models
         {
             Message = "POI Service Healthcheck";
             Status = "Healthy";
+            Version = Assembly.GetEntryAssembly().GetName().Version.ToString();
         }
         [Newtonsoft.Json.JsonProperty(PropertyName = "message")]
         public string Message {get;set;}
 
         [Newtonsoft.Json.JsonProperty(PropertyName = "status")]
         public string Status { get; set; }
+        
+        [Newtonsoft.Json.JsonProperty(PropertyName = "version")]
+        public string Version { get; set; }
     }
 }
