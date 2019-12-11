@@ -10,7 +10,7 @@ namespace poi.Models
         {
             Message = "POI Service Healthcheck";
             Status = "Healthy";
-            Version = "version 1";//Assembly.GetEntryAssembly().GetName().Version.ToString();
+            Version = "version 2";//Assembly.GetEntryAssembly().GetName().Version.ToString();
         }
         [Newtonsoft.Json.JsonProperty(PropertyName = "message")]
         public string Message {get;set;}
